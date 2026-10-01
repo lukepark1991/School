@@ -5,93 +5,90 @@
 #include<climits>
 using namespace std;
 
-const float stopFee = 15.00;
-const float perkm = 2.60;
+const float stopFee = 15.00; //double is more precise, but float uses less memory
+const float perKM = 2.60;
 const float discount = 0.75;
-float cheaptrip = INT_MAX;
-
-
-
+float cheapTrip = INT_MAX;
 
 
 int main()
 {
 	ifstream fileReader;
 	ofstream fileWriter;
-	fileReader. open("taxi.txt");
-	fileWriter. open("taxiReport1.txt");
-	if(fileReader.is_open()&&fileWriter.is_open())
+	fileReader.open("taxi.txt");
+	fileWriter.open("taxiReport1.txt");
+	if(fileReader.is_open() && fileWriter.is_open())
 	{
 		fileWriter<<setw(8)<<"Trip#"<<setw(10)<<"VIP"<<
 		setw(8)<<"Stop#"<<setw(10)<<"Distance"<<setw(10)<<"Charge"<<setw(10)<<"TotalDist"<<setw(13)<<"TotalCharge"<<endl;\
 	
-		int numstop=0;
-		int tripnum =0;
-		int vip=0;
-		float longtrip=0;
-		float totaldist=0;
-		float totalcharge=0;
-		while(fileReader>>vip>>numstop)
+		int numStop = 0;
+		int tripNum = 0;
+		int vip = 0;
+		float longTrip = 0;
+		float totalDist = 0;
+		float totalCharge = 0;
+		while(fileReader >> vip >> numStop)
 		{
 		
-			int i=0;
-			float dist=0;
-			float charge=0;
-			float curx=0;
-			float cury=0;
-			float prevx=0;
-			float prevy=0; 		
+			int i = 0;
+			float dist = 0;
+			float charge = 0;
+			float curX = 0;
+			float curY = 0;
+			float prevX = 0;
+			float prevY = 0; 		
 		
 		
-			tripnum++;
+			tripNum++;
 		
 		
-					for(i=0;i<numstop;i++)
+					for(i = 0; i < numStop ; i++)
 					{
-						fileReader>>curx>>cury;
-						dist = dist+sqrt((pow(curx-prevx,2))+(pow(cury-prevy,2)));
-						prevx=curx;
-						prevy=cury;
+						fileReader >> curX >> curY;
+						dist = dist + sqrt((pow(curX - prevX, 2))+(pow(curY -prevY, 2)));
+						prevX = curX;
+						prevY = curY;
 					}
-					dist=dist+sqrt(pow(curx,2)+pow(cury,2));
-					totaldist=dist+totaldist;
-					charge=((dist*perkm)+(stopFee*numstop));
+					dist = dist + sqrt(pow(curX,2)+pow(curY,2));
+					totalDist = dist + totalDist;
+					charge = ((dist*perKM)+(stopFee*numStop));
 					
 					if(vip==1)
 					{
-						charge=discount*charge;
+						charge = discount * charge;
 					}
 					if(vip==0)
 					{
-						charge=charge;
+						charge = charge;
 					}
-					totalcharge=charge+totalcharge;
+					totalCharge = charge + totalCharge;
 						
-					if(cheaptrip>charge)
+					if(cheapTrip>charge)
 					{
-						cheaptrip=charge;
+						cheapTrip=charge;
 					}
 					
-						if(dist>longtrip)
+						if(dist > longTrip)
 					{
-						longtrip=dist;
+						longTrip = dist;
 					}	
 					
-					if(tripnum<=4||tripnum%10==4)
+					if(tripNum <= 4 || tripNum%10 == 4)
 					{
 				
-					fileWriter<<fixed<<setprecision(2)<<setw(8)<<tripnum<<
-									setw(8)<<vip<<setw(8)<<numstop<<setw(10)<<dist<<setw(10)
-									<<charge<<setw(10)<<totaldist<<setw(13)<<totalcharge<<endl;\
+					fileWriter<<fixed<<setprecision(2)<<setw(8)<<tripNum<<
+									setw(8)<<vip<<setw(8)<<numStop<<setw(10)<<dist<<setw(10)
+									<<charge<<setw(10)<<totalDist<<setw(13)<<totalCharge<<endl;\
 			}
 		}
 		
-	fileWriter<<setw(10)<<"Total distance in August: "<<totaldist<<"km"<<endl;
-	fileWriter<<setw(10)<<"Total charge in August: $"<<totalcharge<<endl;
-	fileWriter<<setw(10)<<"Longes Trip in August: "<<longtrip<<"km"<<endl;
-	fileWriter<<setw(10)<<"Cheapest Trip in August: $"<<cheaptrip<<endl;
-	fileReader. close();
-	fileWriter. close();
+	fileWriter<<setw(10)<<"Total distance in August: "<<totalDist<<"km"<<endl;
+	fileWriter<<setw(10)<<"Total charge in August: $"<<totalCharge<<endl;
+	fileWriter<<setw(10)<<"Longes Trip in August: "<<longTrip<<"km"<<endl;
+	fileWriter<<setw(10)<<"Cheapest Trip in August: $"<<cheapTrip<<endl;
+	fileReader.close();
+	fileWriter.close();
 	
 	}
 	else
