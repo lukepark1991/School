@@ -1,0 +1,140 @@
+#pragma region VEXcode Generated Robot Configuration
+// Make sure all required headers are included.
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+#include <string.h>
+
+
+#include "vex.h"
+
+using namespace vex;
+
+// Brain should be defined by default
+brain Brain;
+
+
+// START IQ MACROS
+#define waitUntil(condition)                                                   \
+  do {                                                                         \
+    wait(5, msec);                                                             \
+  } while (!(condition))
+
+#define repeat(iterations)                                                     \
+  for (int iterator = 0; iterator < iterations; iterator++)
+// END IQ MACROS
+
+
+// Robot configuration code.
+inertial BrainInertial = inertial();
+
+
+// generating and setting random seed
+void initializeRandomSeed(){
+  wait(100,msec);
+  double xAxis = BrainInertial.acceleration(xaxis) * 1000;
+  double yAxis = BrainInertial.acceleration(yaxis) * 1000;
+  double zAxis = BrainInertial.acceleration(zaxis) * 1000;
+  // Combine these values into a single integer
+  int seed = int(
+    xAxis + yAxis + zAxis
+  );
+  // Set the seed
+  srand(seed); 
+}
+
+
+
+void vexcodeInit() {
+
+  // Initializing random seed.
+  initializeRandomSeed(); 
+}
+
+#pragma endregion VEXcode Generated Robot Configuration
+
+//----------------------------------------------------------------------------
+//                                                                            
+//    Module:       main.cpp                                                  
+//    Author:       {author}                                                  
+//    Created:      {date}                                                    
+//    Description:  IQ project                                                
+//                                                                            
+//----------------------------------------------------------------------------
+
+// Include the IQ Library
+#include "iq_cpp.h"
+
+// Allows for easier use of the VEX Library
+using namespace vex;
+
+
+
+
+motor leftMotor(port1,bool(forward));
+motor rightMotor(port2,bool(reverse));
+optical optical1(Port3);
+motor_group driveMotors(leftMotor,rightMotorx`)
+touchled TouchLED9(Port9);
+
+
+int main() {
+
+  // Initializing Robot Configuration. DO NOT REMOVE!
+  vexcodeInit();
+
+  
+  // Begin project code
+  Brain.Screen.print("Group %d %s %s",robotNumber, initial1,initial2);
+
+color colour= 0;
+
+  double hueValue =optical1.hue();
+  if (hueValue>300 || hueValue<=60)
+  {
+    colour = red;
+  }
+  else if(hueValue <=180)
+  {
+    colour=green;
+  }
+  else
+  {
+    colour =blue;
+  }
+
+  int robotNumber = 0;
+  string groupName = "";  
+  string initial1 = "";
+  stirng inital2 = "";
+
+
+
+  while(!TouchLED9.pressing())
+  {}
+
+  while(TouchLED9.pressing()&&optical1.color()!=blue)
+  {
+    driverMotors.spin(forward,50,percent);
+    wait(5,seconds);
+    driveMotors.stop();
+
+
+    leftMotor.spin(forward,25,precent);
+    rightMotor.spin(reverse,25,percent);
+    driveMotors.stop(brake);
+
+    wait(1.5,seconds);
+
+    driveMotors.spin(forward,50,percent);
+    wait(5,seconds);
+    driveMotors.stop();
+
+  }
+
+    Brain.programStop();
+    return EXIT_SUCCESS;
+
+
+}
